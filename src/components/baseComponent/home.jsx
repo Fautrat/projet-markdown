@@ -1,7 +1,9 @@
+import NavBar from '../baseComponent/NavBar.jsx';
+
 function Home() {
   return (
     <div>
-      <h1>Welcome to the Novak HHome</h1>
+        <h1>Welcome to the Novak Home</h1>
     </div>
   );
 }
