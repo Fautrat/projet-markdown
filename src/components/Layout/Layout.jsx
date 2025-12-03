@@ -1,3 +1,4 @@
+import Footer from '../baseComponent/footer.jsx';
 import NavBar from '../baseComponent/NavBar.jsx';
 import { Outlet } from 'react-router-dom';
 
@@ -12,7 +13,7 @@ function Layout() {
           <Outlet />
         </main>
         <footer>
-            <p>© 2024 Novak Application</p>
+           <Footer />
         </footer>
     </div>
   );

@@ -6,12 +6,17 @@ import Upload from '../components/ImageComponent/Upload.jsx';
 import Library from '../components/ImageComponent/Library.jsx';
 import Layout from '../components/Layout/Layout.jsx';
 import MarkdownPage from "../components/markdown/MarkdownPage.jsx";
+import CustomBlok from "../components/markdown/CustomBlok.jsx";
 
 const routes = [
   {
     path: "/",
     Component: Layout,
     children: [
+  {
+    index: true,
+    Component: Home,
+  },
   {
     path: "home",
     Component: Home,
@@ -37,6 +42,10 @@ const routes = [
   {
     path: "markdown",
     Component: MarkdownPage,
+  },
+    {
+    path: "bloc",
+    Component: CustomBlok,
   },
     ],
   },

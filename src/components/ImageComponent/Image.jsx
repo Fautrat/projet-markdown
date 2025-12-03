@@ -1,6 +1,5 @@
 import { Outlet,NavLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import NavBar from '../baseComponent/NavBar.jsx';
 
 function Image() {
 
@@ -29,17 +28,17 @@ function Image() {
 
     if (!db) return <p>Loading</p>;
 
-  return (
-    <div>
-        <div style={{display: 'flex', gap: '20px'}}>
-            <NavLink to="/image/library">Library</NavLink>
-            <NavLink to="/image/upload">Upload</NavLink>
+    return (
+        <div className="container py-4">
+            <div className="d-flex gap-3 mb-4">
+                <NavLink to="/image/library" className={({ isActive }) => "btn btn-outline-primary" + (isActive ? " active" : "")}>📚 Library</NavLink>
+                <NavLink to="/image/upload" className={({ isActive }) => "btn btn-outline-success" + (isActive ? " active" : "")}>⬆️ Upload</NavLink>
             </div>
-            <div>
-            <Outlet />
+            <div className="card shadow-sm p-3">
+                <Outlet />
+            </div>
         </div>
-    </div>
-  )
+    );
 }
 
 export default Image
