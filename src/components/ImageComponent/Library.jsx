@@ -39,15 +39,17 @@ function Library() {
 
   return (
     <div className="image-library">
-      <h1>Image Library</h1>
-      <div className="images">
-        {images.map(img => (
-          <div key={img.id}>
-            <h3>{img.name}</h3>
-            <img src={img.data} alt={`Image ${img.id}`} />
-          </div>
-        ))}
-      </div>
+        <h1>Image Library</h1>
+        <div className="images">
+            {
+            images.map(img => (
+            <div key={img.id}>
+                <h3>{img.name}</h3>
+                <img src={img.data} alt={`Image ${img.id}`} />
+            </div>
+            ))
+            }
+        </div>
     </div>
   );
 }
