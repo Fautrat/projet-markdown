@@ -9,12 +9,13 @@ function NavBar() {
           <li className="nav-item me-3">
             <NavLink to="/markdown" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>Markdown</NavLink>
           </li>
+            <li className="nav-item me-3">
+            <NavLink to="/block" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>Block</NavLink>
+          </li>
           <li className="nav-item me-3">
             <NavLink to="/image" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>Image</NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to="/" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>Home</NavLink>
-          </li>
+
         </ul>
       </div>
     </nav>
