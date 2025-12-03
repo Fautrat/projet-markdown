@@ -1,12 +1,12 @@
-import './App.css'
+import CustomBlok from './BlocsPesonnal/CustomBlok';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-
   return (
     <div>
-      Novak Djokovic
+      <CustomBlok />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
