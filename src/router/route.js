@@ -6,7 +6,7 @@ import Upload from '../components/ImageComponent/Upload.jsx';
 import Library from '../components/ImageComponent/Library.jsx';
 import Layout from '../components/Layout/Layout.jsx';
 import MarkdownPage from "../components/markdown/MarkdownPage.jsx";
-import CustomBlok from "../components/markdown/CustomBlok.jsx";
+// import CustomBlok from "../components/markdown/CustomBlok.jsx";
 
 const routes = [
   {
@@ -43,10 +43,10 @@ const routes = [
     path: "markdown",
     Component: MarkdownPage,
   },
-    {
-    path: "bloc",
-    Component: CustomBlok,
-  },
+//   {
+//   path: "bloc",
+//   Component: CustomBlok,
+// },
     ],
   },
   {
