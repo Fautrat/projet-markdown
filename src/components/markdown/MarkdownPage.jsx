@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import FileTree from "./components/markdown/FileTree";
-import EditorPage from "./components/markdown/EditorPage";
-import { getTree, createFile } from "./components/markdown/markdownStorage";
+import FileTree from "./FileTree";
+import EditorPage from "./EditorPage";
+import { getTree, createFile } from "./markdownStorage";
 
 export default function MarkdownPage() {
     const [currentId, setCurrentId] = useState(null);

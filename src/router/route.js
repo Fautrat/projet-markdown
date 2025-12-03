@@ -5,6 +5,7 @@ import NotFound from '../components/baseComponent/notFound.jsx';
 import Upload from '../components/ImageComponent/Upload.jsx';
 import Library from '../components/ImageComponent/Library.jsx';
 import Layout from '../components/Layout/Layout.jsx';
+import MarkdownPage from "../components/markdown/MarkdownPage.jsx";
 
 const routes = [
   {
@@ -32,6 +33,10 @@ const routes = [
         Component: Library,
       },
     ],
+  },
+  {
+    path: "markdown",
+    Component: MarkdownPage,
   },
     ],
   },

@@ -10,6 +10,9 @@ function NavBar() {
             <li>
             <NavLink to="/image">Image</NavLink>
             </li>
+            <li>
+            <NavLink to="/markdown">Markdown</NavLink>
+            </li>
         </ul>
         </nav>
     );
