@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getTree, createFile, createFolder, renameNode, deleteNodeRecursive, moveNode} from "./markdownStorage";
 import NodeItem from "./NodeItem";
+import { Button } from "react-bootstrap";
+import { FilePlus, FolderPlus, Download } from "lucide-react"; 
 
 export default function FileTree({ onSelectFile, selectedId }) {
     const [nodes, setNodes] = useState([]);
@@ -10,16 +12,16 @@ export default function FileTree({ onSelectFile, selectedId }) {
 
     async function load() {
         setLoading(true);
-        const t = await getTree();
+        const tree = await getTree();
         // ordre : dossiers d'abord, puis par titre
-        t.sort((a, b) => {
+        tree.sort((a, b) => {
             if ((a.parentId ?? null) === (b.parentId ?? null)) {
                 if (a.type === b.type) return (a.title || "").localeCompare(b.title || "");
                 return a.type === "folder" ? -1 : 1;
             }
             return 0;
         });
-        setNodes(t);
+        setNodes(tree);
         setLoading(false);
     }
 
@@ -44,8 +46,8 @@ export default function FileTree({ onSelectFile, selectedId }) {
     }
 
     async function remove(id) {
-        await deleteNodeRecursive(id);
-        if (selectedId === id && onSelectFile) onSelectFile(null);
+        const idRemoved = await deleteNodeRecursive(id, selectedId);
+        if (idRemoved && onSelectFile) onSelectFile(null);
         await load();
     }
 
@@ -102,7 +104,7 @@ export default function FileTree({ onSelectFile, selectedId }) {
         const children = childrenOf(parentId);
         return (
         <div className="position-relative">
-            {children.map((node, idx) => (
+            {children.map((node, index) => (
             <div key={node.id} style={{ position: "relative" }}>
                 <div
                 onDragOver={onDragOver}
@@ -115,7 +117,7 @@ export default function FileTree({ onSelectFile, selectedId }) {
                     depth={depth}
                     selectedId={selectedId}
                     onSelectFile={(id) => {
-                    if (onSelectFile) onSelectFile(id);
+                        if (onSelectFile) onSelectFile(id);
                     }}
                     onRename={rename}
                     onDelete={remove}
@@ -123,6 +125,7 @@ export default function FileTree({ onSelectFile, selectedId }) {
                     onCreateFolder={createFolderAt}
                     onImportFiles={(files) => importFiles(files, node.id, true)}
                     onDragStart={onDragStart}
+                    isLast={index === children.length - 1}
                 />
                 </div>
 
@@ -134,29 +137,56 @@ export default function FileTree({ onSelectFile, selectedId }) {
     }
 
     return (
-        <div className="bg-white border-end d-flex flex-column" style={{ width: 380, maxWidth: 460, minWidth: 300, height: "100vh" }}>
-            <div className="p-3">
-                <div className="d-flex gap-2 mb-3">
-                    <button className="btn btn-primary" onClick={() => createFileAt()}>
-                        📄 Nouveau fichier
-                    </button>
-                    <button className="btn btn-secondary" onClick={() => createFolderAt()}>
-                        📁 Nouveau dossier
-                    </button>
+        <div className="d-flex flex-column border-end" style={{ width: 400, maxWidth: 480, minWidth: 320, height: "100vh", backgroundColor: "hsl(210, 40%, 98%)"}}>
+            <div className="p-3 border-bottom" style={{ backgroundColor: "hsl(0, 0%, 100%)" }} >
+                <h5 className="mb-3 fw-bold" style={{ color: "hsl(222, 47%, 11%)" }}>
+                    📂 Explorateur de fichiers
+                </h5>
 
-                    <label className="btn btn-outline-success mb-0 d-flex align-items-center">
-                        ⬇️ Importer des fichier(s)
-                        <input type="file" accept=".md,text/markdown" multiple style={{ display: "none" }} onChange={(e) => importFiles(Array.from(e.target.files), null, false)}/>
+                <div className="d-flex gap-2">
+                    <Button variant="primary" size="sm" className="d-flex align-items-center gap-1" onClick={() => createFileAt()}>
+                        <FilePlus size={16} />
+                        Nouveau fichier
+                    </Button>
+
+                    <Button variant="secondary" size="sm" className="d-flex align-items-center gap-1" onClick={() => createFolderAt()} >
+                        <FolderPlus size={16} />
+                        Nouveau dossier
+                    </Button>
+
+                    <label className="btn btn-outline-success btn-sm mb-0 d-flex align-items-center gap-1">
+                        <Download size={16} />
+                        Importer
+                        <input  type="file" accept=".md,text/markdown" multiple style={{ display: "none" }} onChange={(e) => importFiles(Array.from(e.target.files || []), null, false)} />
                     </label>
                 </div>
+            </div>
 
-                <div className="p-2 mb-2 small text-muted" onDragOver={onDragOver} onDrop={onDropOnRoot} style={{ borderRadius: 6, background: "#fbfbfb", border: "1px dashed #ddd" }}>
-                    Glisser ici pour déplacer à la racine
+            <div className="px-3 pt-3">
+                <div className="p-2 mb-2 small text-center rounded-2" onDragOver={onDragOver} onDrop={onDropOnRoot}
+                style={{
+                    background: "hsl(210, 40%, 96%)",
+                    border: "2px dashed hsl(214, 32%, 85%)",
+                    color: "hsl(215, 16%, 47%)",
+                    transition: "all 0.2s ease",
+                }}
+                >
+                ↑ Glisser ici pour déplacer à la racine
                 </div>
+            </div>
 
-                <div style={{ maxHeight: "70vh", overflowY: "auto" }}>
-                    {loading ? <div>Chargement...</div> : renderLevel(null)}
+            <div className="flex-grow-1 px-3 pb-3" style={{ overflowY: "auto", overflowX: "hidden" }} >
+                {loading ? (
+                <div className="text-center py-4" style={{ color: "hsl(215, 16%, 47%)" }}>
+                    Chargement...
                 </div>
+                ) : nodes.length === 0 ? (
+                <div className="text-center py-4" style={{ color: "hsl(215, 16%, 47%)" }}>
+                    Aucun fichier. Créez-en un !
+                </div>
+                ) : (
+                    renderLevel(null)
+                )}
             </div>
         </div>
     );
