@@ -1,12 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Image from '../components/ImageComponent/Image.jsx';
 import Home from '../components/baseComponent/home.jsx';
 import NotFound from '../components/baseComponent/notFound.jsx';
-import Upload from '../components/ImageComponent/Upload.jsx';
-import Library from '../components/ImageComponent/Library.jsx';
 import Layout from '../components/Layout/Layout.jsx';
 import MarkdownPage from "../components/markdown/MarkdownPage.jsx";
 import CustomBlock from "../components/blockComponent/CustomBlock.jsx";
+import imageRoute from "./routes/imageRoute.js";
 
 const routes = [
   {
@@ -22,24 +20,6 @@ const routes = [
     Component: Home,
   },
   {
-    path: "image",
-    Component: Image,
-    children: [
-      {
-        index: true,
-        Component: Library,
-      },
-      {
-        path: "upload",
-        Component: Upload,
-      },
-      {
-        path: "library",
-        Component: Library,
-      },
-    ],
-  },
-  {
     path: "markdown",
     Component: MarkdownPage,
   },
@@ -52,7 +32,9 @@ const routes = [
   {
     path: "*",
     Component: NotFound,
-  }
+  },
+  imageRoute,
+
 ];
 
 const router = createBrowserRouter(routes);
