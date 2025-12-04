@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import imagesReducer from "./slices/imagesSlice.js";
+import imagesReducer from "./slices/ImagesSlice.js";
 
 const store = configureStore({
   reducer: {
