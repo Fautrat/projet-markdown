@@ -59,10 +59,10 @@ function Upload() {
     }
 
     return (
-        <div className="image-upload">
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-            {image && <img src={image.data} alt={image.name} width="200" />}
-        <button onClick={saveImage}>Save image</button>
+        <div className="image-upload container py-4">
+            <input type="file" accept="image/*" onChange={handleFileChange} className="form-control mb-3" />
+            {image && <img src={image.data} alt={image.name} width="200" className="img-thumbnail mb-3" />}
+            <button className="btn btn-success" onClick={saveImage}>💾 Save image</button>
         </div>
     );
 }

@@ -1,20 +1,25 @@
 import { NavLink } from "react-router-dom";
 
 function NavBar() {
-    return (
-        <nav>
-        <ul>
-            <li>
-            <NavLink to="/">Home</NavLink>
-            </li>
-            <li>
-            <NavLink to="/image">Image</NavLink>
-            </li>
-            <li>
-            <NavLink to="/markdown">Markdown</NavLink>
-            </li>
+  return (
+    <nav style={{ backgroundColor: "#0d6efd" }} className="navbar navbar-dark">
+      <div className="container-fluid">
+        <NavLink className="navbar-brand" to="/">MonApp</NavLink>
+        <ul className="navbar-nav d-flex flex-row ms-auto">
+          <li className="nav-item me-3">
+            <NavLink to="/markdown" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>Markdown</NavLink>
+          </li>
+            <li className="nav-item me-3">
+            <NavLink to="/block" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>Block</NavLink>
+          </li>
+          <li className="nav-item me-3">
+            <NavLink to="/image" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>Image</NavLink>
+          </li>
+
         </ul>
-        </nav>
-    );
+      </div>
+    </nav>
+  );
 }
+
 export default NavBar;
