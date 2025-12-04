@@ -1,31 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import {useImages} from "../../hooks/useImages.js";
 
 function Upload() {
 
-    const [db, setDb] = useState(null);
-    const [image, setImage] = useState(null);
-
-    useEffect(() => {
-
-        const request = indexedDB.open("IndexedDB", 1);
-
-        request.onupgradeneeded = () => {
-            const db = request.result;
-
-            if (db.objectStoreNames.contains("images")) {
-                db.deleteObjectStore("images");
-            }
-
-            db.createObjectStore("images", {
-                keyPath: "id",
-                autoIncrement: true
-            });
-        };
-
-    request.onsuccess = () => { setDb(request.result); };
-    request.onerror = () => {console.error("Db error", request.error);};
-
-    }, []);
+    const { add } = useImages();
+    const [newImage, setNewImage] = useState(null);
 
     function handleFileChange(e) {
         const file = e.target.files[0];
@@ -33,7 +12,7 @@ function Upload() {
 
         const reader = new FileReader();
         reader.onloadend = () => {
-            setImage({
+            setNewImage({
                 name: file.name,
                 data: reader.result,
             });
@@ -42,26 +21,20 @@ function Upload() {
     }
 
     function saveImage() {
-        if (!db || !image) return;
+        if (!newImage) {
+            alert("No image to save!");
+            return;
+        }
 
-        const tx = db.transaction("images", "readwrite");
-        const store = tx.objectStore("images");
-
-        store.add({
-            id: Date.now(),
-            name: image.name,
-            data: image.data
-        });
-
-        tx.oncomplete = () => {alert("Image saved!");};
-        tx.onerror = () => {console.error("Save error", tx.error);};
-
+        add(newImage);
+        setNewImage(null);
+        alert("Oh yeah baby! Image saved successfully.");
     }
 
     return (
         <div className="image-upload container py-4">
             <input type="file" accept="image/*" onChange={handleFileChange} className="form-control mb-3" />
-            {image && <img src={image.data} alt={image.name} width="200" className="img-thumbnail mb-3" />}
+            {newImage && <img src={newImage.data} alt={newImage.name} width="200" className="img-thumbnail mb-3" />}
             <button className="btn btn-success" onClick={saveImage}>💾 Save image</button>
         </div>
     );
