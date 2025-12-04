@@ -1,16 +1,31 @@
-import { useImages } from "../../hooks/useImages.js";
+import { useSelector, useDispatch } from "react-redux";
+import {removeImageLocal,updateImageLocal,} from "../../store/slices/ImagesSlice.js";
+import { deleteImage, updateImage } from "../../services/imageService.js";
 
 function Library() {
-  const { images, remove, update } = useImages();
+  const dispatch = useDispatch();
+  const images = useSelector((state) => state.images.items || []);
 
-  const handleDelete = (id) => {
-    remove(id);
+  const handleDelete = async (id) => {
+    if (!confirm("Remove this image ?")) return;
+    try {
+      await deleteImage(id);
+      dispatch(removeImageLocal(id));
+    }
+    catch (err) {
+      console.error("Delete failed:", err);
+    }
   };
 
-  const handleEdit = (id) => {
-    const newName = prompt("Enter new name for the image:");
-    if (newName) {
-      update(id, { name: newName });
+  const handleEdit = async (id) => {
+    const newNamePrompt = prompt("New name :", "");
+    if (newNamePrompt === null) return;
+    try {
+      const updated = await updateImage(id, { name: newNamePrompt });
+      dispatch(updateImageLocal(updated));
+    }
+    catch (err) {
+      console.error("Update failed:", err);
     }
   };
 

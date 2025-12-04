@@ -1,18 +1,10 @@
-// import {configureStore} from '@reduxjs/toolkit';
-// import markdownDBSlice from './slices/MarkdownDB.js';
+import { configureStore } from "@reduxjs/toolkit";
+import imagesReducer from "./slices/imagesSlice.js";
 
-// const store = configureStore({
-//     reducer: {
-//         markdownDB: markdownDBSlice,
+const store = configureStore({
+  reducer: {
+    images: imagesReducer,
+  },
+});
 
-//     }
-// });
-
-// export default store;
-
-
-// // const db useSelector = (store) => store.compteur.value; :/ get the value from the store
-
-// // const dispatch = useDispatch(); // communique avec les actions du store
-
-// // dispatch(increment()); // example to increment the counter
+export default store;
