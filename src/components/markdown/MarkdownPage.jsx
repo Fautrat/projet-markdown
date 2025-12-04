@@ -1,36 +1,40 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import FileTree from "./FileTree";
 import EditorPage from "./EditorPage";
 import { getTree, createFile } from "./markdownStorage";
 
 export default function MarkdownPage() {
     const [currentId, setCurrentId] = useState(null);
-    const [reloadKey, setReloadKey] = useState(0);
+    const [treeKey, setTreeKey] = useState(0);
+    const initializedRef = useRef(false);
 
     useEffect(() => {
-        let cancelled = false;
+        if (initializedRef.current) return;
+        initializedRef.current = true;
 
         async function init() {
             const tree = await getTree();
-            // code a corriger, ici il y a une duplication du fichier de bienvenue
             if (tree.length === 0) {
                 const id = await createFile("Bienvenue.md", null, "# Bienvenue\n\nCommencez à écrire...");
-                if (!cancelled) setCurrentId(id);
-            } else if (!cancelled) {
+                setCurrentId(id);
+                setTreeKey(k => k + 1);
+            } else {
                 const firstFile = tree.find((n) => n.type === "file");
-                setCurrentId(firstFile ? firstFile.id : null);
+                setCurrentId(firstFile?.id ?? null);
             }
         }
 
         init();
-        return () => {
-            cancelled = true;
-        };
-    }, [reloadKey]);
+    }, []);
+
+
+    const refreshTree = useCallback(() => {
+        setTreeKey(k => k + 1);
+    }, []);
 
     return (
         <div className="d-flex" style={{ minHeight: "100vh" }}>
-            <FileTree onSelectFile={(id) => setCurrentId(id)} selectedId={currentId} onTreeChange={() => setReloadKey((k) => k + 1)}/>
+            <FileTree key={treeKey} onSelectFile={(id) => setCurrentId(id)} selectedId={currentId}/>
 
             <div className="flex-grow-1 p-3" style={{ background: "#f4f6f8" }}>
                 {!currentId ? (
@@ -58,6 +62,7 @@ export default function MarkdownPage() {
                         const text = await files[0].text();
                         const id = await createFile(files[0].name, null, text);
                         setCurrentId(id);
+                        refreshTree();
                     }}
                 >
                     <h4>Sélectionner un fichier</h4>

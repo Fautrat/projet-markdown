@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { getTree, createFile, createFolder, renameNode, deleteNodeRecursive, moveNode, getNode} from "./markdownStorage";
+import { useEffect, useState } from "react";
+import { getTree, createFile, createFolder, renameNode, deleteNodeRecursive, moveNode} from "./markdownStorage";
 import NodeItem from "./NodeItem";
 
-export default function FileTree({ onSelectFile, selectedId, onTreeChange }) {
+export default function FileTree({ onSelectFile, selectedId }) {
     const [nodes, setNodes] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -21,7 +21,6 @@ export default function FileTree({ onSelectFile, selectedId, onTreeChange }) {
         });
         setNodes(t);
         setLoading(false);
-        if (onTreeChange) onTreeChange();
     }
 
     function childrenOf(parentId) {
@@ -99,23 +98,6 @@ export default function FileTree({ onSelectFile, selectedId, onTreeChange }) {
         await load();
     }
 
-    async function exportFile(id) {
-        const node = await getNode(id);
-        if (!node || node.type !== "file") {
-            alert("Sélectionnez un fichier à exporter.");
-            return;
-        }
-        const blob = new Blob([node.content || ""], { type: "text/markdown;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = node.title || "export.md";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-    }
-
     function renderLevel(parentId = null, depth = 0) {
         const children = childrenOf(parentId);
         return (
@@ -162,24 +144,17 @@ export default function FileTree({ onSelectFile, selectedId, onTreeChange }) {
                         📁 Nouveau dossier
                     </button>
 
-                    <label className="btn btn-outline-dark mb-0">
+                    <label className="btn btn-outline-success mb-0 d-flex align-items-center">
                         ⬇️ Importer des fichier(s)
                         <input type="file" accept=".md,text/markdown" multiple style={{ display: "none" }} onChange={(e) => importFiles(Array.from(e.target.files), null, false)}/>
                     </label>
-
-                    {/* <button className="btn btn-outline-primary ms-auto" onClick={() => {
-                            if (!selectedId) return alert("Sélectionnez un fichier à exporter.");
-                            exportFile(selectedId);
-                        }}>
-                        Export Fichier(s)
-                    </button> */}
                 </div>
 
                 <div className="p-2 mb-2 small text-muted" onDragOver={onDragOver} onDrop={onDropOnRoot} style={{ borderRadius: 6, background: "#fbfbfb", border: "1px dashed #ddd" }}>
                     Glisser ici pour déplacer à la racine
                 </div>
 
-                <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
+                <div style={{ maxHeight: "70vh", overflowY: "auto" }}>
                     {loading ? <div>Chargement...</div> : renderLevel(null)}
                 </div>
             </div>
