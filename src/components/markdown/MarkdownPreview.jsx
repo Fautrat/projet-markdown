@@ -1,7 +1,7 @@
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 
-marked.setOptions({ gfm: true, breaks: true });
+marked.setOptions({ gfm: true, breaks: true, mangle: false, headerIds: false,});
 
 export default function MarkdownPreview({ value }) {
     const html = DOMPurify.sanitize(marked.parse(value || ""));
