@@ -27,8 +27,8 @@ export default function EditorPage({ fileId }) {
         };
     }, [fileId]);
 
-    function handleInsertImage(base64, name) {
-        const mdLine = `<img src="${base64}" alt="${name}" style="max-width:100%"/>`;
+    function handleInsertImage(name, id) {
+        const mdLine = `![${name}](img:${id})`;
 
         setContent(prev => {
             const newContent = (prev ? prev + "\n\n" : "") + mdLine;
@@ -96,7 +96,7 @@ export default function EditorPage({ fileId }) {
                     show={showImageModal}
                     onClose={() => setShowImageModal(false)}
                     onSelect={(img) => {
-                        handleInsertImage(img.data, img.name);
+                        handleInsertImage(img.name, img.id);
                         setShowImageModal(false);
                     }}
                 />
