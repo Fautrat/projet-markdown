@@ -34,8 +34,11 @@ function Upload() {
 
       setNewImage(null);
       alert("Image saved successfully!");
-    } catch (err) {
+    }
+    catch (err) {
       console.error("Save failed:", err);
+      alert("Image save failed!");
+
     }
   }
 
