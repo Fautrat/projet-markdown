@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { getNode, updateFileContent } from "./markdownStorage";
 import MarkdownEditor from "./MarkdownEditor";
 import MarkdownPreview from "./MarkdownPreview";
+import ImagesModal from "./ImagesModal";
 
 export default function EditorPage({ fileId }) {
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
+    const [showImageModal, setShowImageModal] = useState(false);
 
     useEffect(() => {
         let cancelled = false;
@@ -24,6 +26,18 @@ export default function EditorPage({ fileId }) {
             cancelled = true;
         };
     }, [fileId]);
+
+    function handleInsertImage(base64, name) {
+        const mdLine = `<img src="${base64}" alt="${name}" style="max-width:100%"/>`;
+
+        setContent(prev => {
+            const newContent = (prev ? prev + "\n\n" : "") + mdLine;
+            updateFileContent(fileId, newContent).catch(console.error);
+            return newContent;
+        });
+    }
+
+
 
     function handleChange(md) {
         setContent(md);
@@ -56,7 +70,14 @@ export default function EditorPage({ fileId }) {
             <div style={{ display: "flex", gap: 12, height: "calc(100vh - 120px)" }}>
                 <div style={{ flex: 1 }}>
                     <div className="card h-100">
-                        <div className="card-header">Éditeur</div>
+                        <div className="card-header">
+                            Éditeur
+                            <button className="ms-4 btn btn-outline-secondary btn-sm"  onClick={() => setShowImageModal(true)}>
+                                📷 Insérer une image
+                            </button>
+                        </div>
+                        
+
                         <div className="card-body p-0">
                             <MarkdownEditor value={content} onChange={handleChange} />
                         </div>
@@ -71,6 +92,14 @@ export default function EditorPage({ fileId }) {
                         </div>
                     </div>
                 </div>
+                <ImagesModal
+                    show={showImageModal}
+                    onClose={() => setShowImageModal(false)}
+                    onSelect={(img) => {
+                        handleInsertImage(img.data, img.name);
+                        setShowImageModal(false);
+                    }}
+                />
             </div>
         </div>
     );
