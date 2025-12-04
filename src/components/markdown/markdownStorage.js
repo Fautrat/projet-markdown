@@ -153,13 +153,17 @@ export async function moveNode(id, newParentId) {
     return putNodeRaw(node);
 }
 
-export async function deleteNodeRecursive(id) {
+export async function deleteNodeRecursive(id, selectedId) {
     const all = await getTree();
+    let idRemoved = false;
     const descendants = getAllDescendants(all, id);
     for (const d of descendants) {
+        if (selectedId === d.id) idRemoved = true;
         await deleteNodeRaw(d.id);
     }
     await deleteNodeRaw(id);
+    if (selectedId === id) idRemoved = true;
+    return idRemoved;
 }
 
 function getAllDescendants(allNodes, id) {
