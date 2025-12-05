@@ -166,7 +166,6 @@ function CustomBlock() {
           </Button>
         )}
       </div>
-    </div>
 
     <Form.Label>Preview</Form.Label>
     <Form style={{ marginBottom: "1rem", width: "50%" }}>
