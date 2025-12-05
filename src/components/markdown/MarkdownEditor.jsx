@@ -10,6 +10,8 @@ export default function MarkdownEditor({ value, onChange }) {
             fontSize: 15,
             border: "none",
             resize: "none",
+            boxSizing: "border-box",
+            overflowX: "hidden",
         }}
         value={value}
         onChange={(e) => onChange(e.target.value)}
