@@ -129,9 +129,9 @@ function EditableBlock({ block, isEditing, onEdit, onCancel, onDelete, onSave })
           ) : (
             <>
               <h5 className="card-title">Title: {block.title}</h5>
-              <p className="card-text">Content: 
+              <div className="card-text">Content: 
                 <div className="markdown-preview" dangerouslySetInnerHTML={{ __html: previewHtml }} />
-              </p>
+              </div>
               <small className="text-muted">Shortcut: {block.shortcut}</small>
             </>
           )}
