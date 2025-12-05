@@ -1,6 +1,6 @@
-import Image from "../../components/imageComponent/Image.jsx";
+import Image from "../../components/ImageComponent/Image.jsx";
 import Upload from "../../components/imageComponent/Upload.jsx";
-import Library from "../../components/imageComponent/Library.jsx";
+import Library from "../../components/ImageComponent/Library.jsx";
 
 const route = {
     path: "image",

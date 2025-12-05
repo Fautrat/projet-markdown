@@ -4,7 +4,7 @@ function NavBar() {
   return (
     <nav style={{ backgroundColor: "#0d6efd" }} className="navbar navbar-dark">
       <div className="container-fluid">
-        <NavLink className="navbar-brand" to="/">MonApp</NavLink>
+        <NavLink className="navbar-brand" to="/">Markdown SAE Project</NavLink>
         <ul className="navbar-nav d-flex flex-row ms-auto">
           <li className="nav-item me-3">
             <NavLink to="/markdown" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>Markdown</NavLink>
