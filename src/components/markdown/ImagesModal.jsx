@@ -36,11 +36,11 @@ export default function ImagesModal({ show, onClose, onSelect }) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                    <h5 style={{ margin: 0 }}>Bibliothèque d'images</h5>
+                    <h5 style={{ margin: 0 }}>Image Library</h5>
                 </div>
 
                 {images.length === 0 ? (
-                <div className="text-muted">Aucune image dans la bibliothèque.</div>
+                <div className="text-muted">No image in library.</div>
                 ) : (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
                     {images.map(img => (

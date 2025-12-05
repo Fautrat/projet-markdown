@@ -29,9 +29,42 @@ function BlockLibrary() {
     }
   };
 
+    const exportSingleBlock = (block) => {
+  const blob = new Blob(
+    [JSON.stringify(block, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${block.title}.block.mdlc`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+const exportAllBlocks = (allBlocks) => {
+  const blob = new Blob(
+    [JSON.stringify(allBlocks, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `blocks.blocks.mdlc`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
   return (
     <>
-      <h1 className="mb-4">Block Library</h1>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="mb-4">Block Library</h1>
+        <button className="btn btn-primary mb-3" onClick={() => exportAllBlocks(blocks)}>
+          📦 Export all blocks
+        </button>
+      </div>
       <div className="row">
         {blocks.map((block) => (
           <EditableBlock
@@ -42,6 +75,7 @@ function BlockLibrary() {
             onCancel={() => setEditingId(null)}
             onDelete={() => handleDelete(block.id)}
             onSave={(edited) => handleSave(block, edited)}
+            exportSingleBlock={exportSingleBlock}
           />
         ))}
       </div>
@@ -49,11 +83,11 @@ function BlockLibrary() {
   );
 }
 
-function EditableBlock({ block, isEditing, onEdit, onCancel, onDelete, onSave }) {
-  const [formData, setFormData] = useState({
-    title: block.title,
-    content: block.content,
-    shortcut: block.shortcut,
+  const EditableBlock = ({ block, isEditing, onEdit, onCancel, onDelete, onSave, exportSingleBlock }) => {
+    const [formData, setFormData] = useState({
+      title: block.title,
+      content: block.content,
+      shortcut: block.shortcut,
   });
   const [previewHtml, setPreviewHtml] = useState("");
 
@@ -125,9 +159,9 @@ function EditableBlock({ block, isEditing, onEdit, onCancel, onDelete, onSave })
                   readOnly
                   className="form-control"/>
               </div>
-            </>
-          ) : (
-            <>
+            </>)
+            :
+            (<>
               <h5 className="card-title">Title: {block.title}</h5>
               <div className="card-text">Content: 
                 <div className="markdown-preview" dangerouslySetInnerHTML={{ __html: previewHtml }} />
@@ -148,6 +182,9 @@ function EditableBlock({ block, isEditing, onEdit, onCancel, onDelete, onSave })
               </>
             ) : (
               <>
+                <button className="btn btn-sm btn-secondary" onClick={() => exportSingleBlock(block)}>
+                  ⬇️ Export
+                </button>
                 <button className="btn btn-sm btn-warning" onClick={onEdit}>
                   ✏️ Edit
                 </button>
