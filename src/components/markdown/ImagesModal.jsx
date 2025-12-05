@@ -10,7 +10,7 @@ export default function ImagesModal({ show, onClose, onSelect }) {
         async function loadImages() {
             setLoading(true);
             try {
-                const req = indexedDB.open("IndexedDB", 1);
+                const req = indexedDB.open("MarkdownDB", 1);
                     req.onupgradeneeded = () => {
                     const db = req.result;
                     if (!db.objectStoreNames.contains("images")) {
