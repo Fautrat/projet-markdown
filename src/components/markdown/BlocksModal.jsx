@@ -1,47 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Download } from "lucide-react"; 
 
 export default function BlocksModal({ show, onClose, onSelect }) {
-    const [blocks, setBlocks] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const blocks = useSelector((state) => state.blocks.items || []);
 
     useEffect(() => {
         if (!show) return;
-        let cancelled = false;
-        async function loadBlocks() {
-            setLoading(true);
-            try {
-                const req = indexedDB.open("MarkdownDB", 1);
-                    req.onupgradeneeded = () => {
-                    const db = req.result;
-                    if (!db.objectStoreNames.contains("blocks")) {
-                        db.createObjectStore("blocks", { keyPath: "id", autoIncrement: true });
-                    }
-                };
-
-                const db = await new Promise((resolve, reject) => {
-                    req.onsuccess = () => resolve(req.result);
-                    req.onerror = () => reject(req.error);
-                });
-
-                const tx = db.transaction("blocks", "readonly");
-                const store = tx.objectStore("blocks");
-                const allReq = store.getAll();
-
-                const results = await new Promise((resolve, reject) => {
-                    allReq.onsuccess = () => resolve(allReq.result || []);
-                    allReq.onerror = () => reject(allReq.error);
-                });
-
-                if (!cancelled) setBlocks(results);
-            } catch (e) {
-                console.error("BlocksModal load error", e);
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        }
-        loadBlocks();
-        return () => { cancelled = true; };
     }, [show]);
 
     if (!show) return null;
@@ -75,12 +40,10 @@ export default function BlocksModal({ show, onClose, onSelect }) {
                     <h5 style={{ margin: 0 }}>Block library</h5>
                 </div>
 
-                {loading ? (
-                <div>Chargement...</div>
-                ) : blocks.length === 0 ? (
+                {blocks.length === 0 ? (
                 <div className="text-muted">No blocks in the library.</div>
                 ) : (
-                <div className="d-flex gap-4 flex-wrap" >
+                <div className="d-flex gap-5 flex-wrap" >
                     {blocks.map(block => (
                     <div key={block.id}
                         style={{
