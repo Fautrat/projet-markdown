@@ -24,6 +24,7 @@ export async function getAllImages() {
     const store = tx.objectStore("images");
 
     const request = store.getAll();
+    console.log("Getting all images from DB");
 
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);

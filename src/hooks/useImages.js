@@ -7,6 +7,7 @@ export function useImages() {
   useEffect(() => {
     async function fetchImages() {
       const imgs = await getAllImages();
+      console.log("Fetched images:", imgs);
       setImages(imgs);
     }
     fetchImages();
