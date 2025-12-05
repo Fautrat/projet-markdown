@@ -29,9 +29,26 @@ Fonctionnalités principales :
 
 ---
 
+## Lancement du projet
+
+pour lancer le projet, il faut lancer à la racine du projet les commandes : 
+
+```bash
+npm install
+npm run dev
+```
+
+puis ouvrir le navigateur
+ 
+```bash
+ local http://localhost:5173/
+```
+
+---
+
 ## Technologies utilisées
 
-- **Frontend** : React, React Router, Bootstrap
+- **Frontend** : React, React Router, Bootstrap, Lucid (icones)
 - **State management** : Redux
 
 ---
