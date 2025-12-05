@@ -79,6 +79,6 @@ export default function MarkdownPreview({ value }) {
     }, [value]);
 
     return (
-        <div className="p-3" style={{ height: "100%", overflowY: "auto", background: "white" }} dangerouslySetInnerHTML={{ __html: html }} />
+        <div className="markdown-preview" dangerouslySetInnerHTML={{ __html: html }} />
     );
 }

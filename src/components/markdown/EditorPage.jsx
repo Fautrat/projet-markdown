@@ -5,6 +5,8 @@ import MarkdownPreview from "./MarkdownPreview";
 import ImagesModal from "./ImagesModal";
 import BlocksModal from "./BlocksModal";
 
+import '../../styles/markdown.css';
+
 export default function EditorPage({ fileId }) {
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
@@ -69,9 +71,9 @@ export default function EditorPage({ fileId }) {
                 </div>
             </div>
 
-            <div style={{ display: "flex", gap: 12, height: "calc(100vh - 120px)" }}>
-                <div style={{ flex: 1 }}>
-                    <div className="card h-100">
+            <div style={{ display: "flex", gap: 12, height: "calc(100vh - 120px)", minWidth: 0 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="card h-100 d-flex flex-column">
                         <div className="card-header">
                             Editor
                             <button className="ms-4 btn btn-outline-secondary btn-sm"  onClick={() => setShowImageModal(true)}>
@@ -81,22 +83,23 @@ export default function EditorPage({ fileId }) {
                                 Insert Block
                             </button>
                         </div>
-                        
 
-                        <div className="card-body p-0">
+                        <div className="card-body p-0 flex-grow-1 overflow-auto">
                             <MarkdownEditor value={content} onChange={handleChange} />
                         </div>
                     </div>
                 </div>
 
-                <div style={{ flex: 1.4 }}>
-                    <div className="card h-100">
+                <div style={{ flex: 1.4, minWidth: 0 }}>
+                    <div className="card h-100 d-flex flex-column">
                         <div className="card-header">Preview</div>
-                        <div className="card-body p-0">
+
+                        <div className="card-body p-0 flex-grow-1 overflow-auto">
                             <MarkdownPreview value={content} />
                         </div>
                     </div>
                 </div>
+
                 <ImagesModal
                     show={showImageModal}
                     onClose={() => setShowImageModal(false)}
@@ -105,6 +108,7 @@ export default function EditorPage({ fileId }) {
                         setShowImageModal(false);
                     }}
                 />
+
                 <BlocksModal
                     show={showBlocksModal}
                     onClose={() => setShowBlocksModal(false)}

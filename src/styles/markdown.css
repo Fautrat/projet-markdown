@@ -12,3 +12,17 @@
   transition: all 0.15s ease;
 }
 
+.markdown-preview {
+    padding: 1rem;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: white;
+}
+
+.markdown-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+

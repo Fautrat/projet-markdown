@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
+import { Download } from "lucide-react"; 
 
 export default function BlocksModal({ show, onClose, onSelect }) {
-    const [images, setImages] = useState([]);
+    const [blocks, setBlocks] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!show) return;
         let cancelled = false;
-        async function loadImages() {
+        async function loadBlocks() {
             setLoading(true);
             try {
                 const req = indexedDB.open("MarkdownDB", 1);
                     req.onupgradeneeded = () => {
                     const db = req.result;
-                    if (!db.objectStoreNames.contains("images")) {
-                        db.createObjectStore("images", { keyPath: "id", autoIncrement: true });
+                    if (!db.objectStoreNames.contains("blocks")) {
+                        db.createObjectStore("blocks", { keyPath: "id", autoIncrement: true });
                     }
                 };
 
@@ -23,8 +24,8 @@ export default function BlocksModal({ show, onClose, onSelect }) {
                     req.onerror = () => reject(req.error);
                 });
 
-                const tx = db.transaction("images", "readonly");
-                const store = tx.objectStore("images");
+                const tx = db.transaction("blocks", "readonly");
+                const store = tx.objectStore("blocks");
                 const allReq = store.getAll();
 
                 const results = await new Promise((resolve, reject) => {
@@ -32,21 +33,21 @@ export default function BlocksModal({ show, onClose, onSelect }) {
                     allReq.onerror = () => reject(allReq.error);
                 });
 
-                if (!cancelled) setImages(results);
+                if (!cancelled) setBlocks(results);
             } catch (e) {
-                console.error("ImageModal load error", e);
+                console.error("BlocksModal load error", e);
             } finally {
                 if (!cancelled) setLoading(false);
             }
         }
-        loadImages();
+        loadBlocks();
         return () => { cancelled = true; };
     }, [show]);
 
     if (!show) return null;
 
     return (
-        <div className="image-modal-backdrop" onClick={onClose}
+        <div className="blocks-modal-backdrop" onClick={onClose}
         style={{
             position: "fixed",
             inset: 0,
@@ -57,7 +58,7 @@ export default function BlocksModal({ show, onClose, onSelect }) {
             zIndex: 1050,
         }}
         >
-            <div  className="image-modal-dialog"
+            <div  className="blocks-modal-dialog"
                 style={{
                     width: "80%",
                     maxWidth: 1000,
@@ -71,48 +72,29 @@ export default function BlocksModal({ show, onClose, onSelect }) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                    <h5 style={{ margin: 0 }}>Image Library</h5>
+                    <h5 style={{ margin: 0 }}>Block library</h5>
                 </div>
 
                 {loading ? (
-                <div>Loading...</div>
-                ) : images.length === 0 ? (
-                <div className="text-muted">No images found in the library.</div>
+                <div>Chargement...</div>
+                ) : blocks.length === 0 ? (
+                <div className="text-muted">No blocks in the library.</div>
                 ) : (
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-                    {images.map(img => (
-                    <div key={img.id}
+                <div className="d-flex gap-4 flex-wrap" >
+                    {blocks.map(block => (
+                    <div key={block.id}
                         style={{
-                            width: 120,
                             cursor: "pointer",
                             textAlign: "center",
                         }}
-                        onClick={() => onSelect(img)}
-                        title={img.name}
+                        onClick={() => onSelect(block)}
+                        title={block.title}
                     >
-                        <div style={{
-                            width: 120,
-                            height: 80,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            overflow: "hidden",
-                            borderRadius: 6,
-                            border: "1px solid #e9e9e9",
-                            background: "#fafafa"
-                        }}>
-                        {img.data ? (
-                            <img
-                            src={img.data}
-                            alt={img.name}
-                            style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "cover" }}
-                            />
-                        ) : (
-                            <div className="text-muted small">No data</div>
-                        )}
+                        <div>
+                            <Download size={16} />
                         </div>
                         <div style={{ marginTop: 6, fontSize: 12, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                            {img.name || `Image #${img.id}`}
+                            {block.title}
                         </div>
                     </div>
                     ))}
