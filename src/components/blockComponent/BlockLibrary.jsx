@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { removeBlockLocal, updateBlockLocal } from "../../store/slices/blockSlice.js";
 import { deleteBlock, updateBlock } from "../../services/blockService.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { renderMarkdown } from "../markdown/renderMarkdown";
 
 function BlockLibrary() {
   const dispatch = useDispatch();
@@ -88,6 +89,15 @@ const exportAllBlocks = (allBlocks) => {
       content: block.content,
       shortcut: block.shortcut,
   });
+  const [previewHtml, setPreviewHtml] = useState("");
+
+  useEffect(() => {
+      async function update() {
+        const html = await renderMarkdown(block.content);
+        setPreviewHtml(html);
+      }
+      update();
+    }, [block.content]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -153,7 +163,9 @@ const exportAllBlocks = (allBlocks) => {
             :
             (<>
               <h5 className="card-title">Title: {block.title}</h5>
-              <p className="card-text">Content: {block.content}</p>
+              <div className="card-text">Content: 
+                <div className="markdown-preview" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+              </div>
               <small className="text-muted">Shortcut: {block.shortcut}</small>
             </>
           )}
