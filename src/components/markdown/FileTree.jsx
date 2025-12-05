@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getTree, createFile, createFolder, renameNode, deleteNodeRecursive, moveNode} from "./markdownStorage";
 import NodeItem from "./NodeItem";
 import { Button } from "react-bootstrap";
-import { FilePlus, FolderPlus, Download } from "lucide-react"; 
+import { FilePlus, FolderPlus, Download } from "lucide-react";
 
 export default function FileTree({ onSelectFile, selectedId }) {
     const [nodes, setNodes] = useState([]);
@@ -30,13 +30,13 @@ export default function FileTree({ onSelectFile, selectedId }) {
     }
 
     async function createFileAt(parentId = null) {
-        const id = await createFile("Nouveau fichier.md", parentId, "");
+        const id = await createFile("new file.md", parentId, "");
         await load();
         if (onSelectFile) onSelectFile(id);
     }
 
     async function createFolderAt(parentId = null) {
-        await createFolder("Nouveau dossier", parentId);
+        await createFolder("new folder", parentId);
         await load();
     }
 
@@ -65,7 +65,7 @@ export default function FileTree({ onSelectFile, selectedId }) {
             await moveNode(id, folderId);
             await load();
         } catch (err) {
-            alert("Impossible de déplacer : " + err.message);
+            alert("Unable to move: " + err.message);
         }
     }
 
@@ -78,7 +78,7 @@ export default function FileTree({ onSelectFile, selectedId }) {
             await moveNode(id, null);
             await load();
         } catch (err) {
-            alert("Impossible de déplacer : " + err.message);
+            alert("Unable to move: " + err.message);
         }
     }
 
@@ -140,23 +140,23 @@ export default function FileTree({ onSelectFile, selectedId }) {
         <div className="d-flex flex-column border-end" style={{ width: 400, maxWidth: 480, minWidth: 320, height: "100vh", backgroundColor: "hsl(210, 40%, 98%)"}}>
             <div className="p-3 border-bottom" style={{ backgroundColor: "hsl(0, 0%, 100%)" }} >
                 <h5 className="mb-3 fw-bold" style={{ color: "hsl(222, 47%, 11%)" }}>
-                    📂 Explorateur de fichiers
+                    📂 File Explorer
                 </h5>
 
                 <div className="d-flex gap-2">
                     <Button variant="primary" size="sm" className="d-flex align-items-center gap-1" onClick={() => createFileAt()}>
                         <FilePlus size={16} />
-                        Nouveau fichier
+                        New File
                     </Button>
 
                     <Button variant="secondary" size="sm" className="d-flex align-items-center gap-1" onClick={() => createFolderAt()} >
                         <FolderPlus size={16} />
-                        Nouveau dossier
+                        New Folder
                     </Button>
 
                     <label className="btn btn-outline-success btn-sm mb-0 d-flex align-items-center gap-1">
                         <Download size={16} />
-                        Importer
+                        Import
                         <input  type="file" accept=".md,text/markdown" multiple style={{ display: "none" }} onChange={(e) => importFiles(Array.from(e.target.files || []), null, false)} />
                     </label>
                 </div>
@@ -171,18 +171,18 @@ export default function FileTree({ onSelectFile, selectedId }) {
                     transition: "all 0.2s ease",
                 }}
                 >
-                ↑ Glisser ici pour déplacer à la racine
+                ↑ Drag & Drop files here to move to root ↑
                 </div>
             </div>
 
             <div className="flex-grow-1 px-3 pb-3" style={{ overflowY: "auto", overflowX: "hidden" }} >
                 {loading ? (
                 <div className="text-center py-4" style={{ color: "hsl(215, 16%, 47%)" }}>
-                    Chargement...
+                    Loading...
                 </div>
                 ) : nodes.length === 0 ? (
                 <div className="text-center py-4" style={{ color: "hsl(215, 16%, 47%)" }}>
-                    Aucun fichier. Créez-en un !
+                    No files found. Create one!
                 </div>
                 ) : (
                     renderLevel(null)

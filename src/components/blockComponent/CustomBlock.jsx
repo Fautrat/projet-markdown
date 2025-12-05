@@ -36,7 +36,6 @@ function CustomBlock() {
       [field]: value,
     }));
   }
- // Fonctionnalité pour créer des raccourcis clavier
     
   function createShortcut(e) {
       e.preventDefault();
@@ -61,47 +60,43 @@ function CustomBlock() {
 
   return (
   <div style={{ margin: "2rem" }}>
-   <h3>Bloc Personalisé</h3><br />
+   <h3>Custom Block</h3><br />
   
 
-      {/* TITRE */}
-      <Form.Label>Nom de Titre</Form.Label>
+      <Form.Label>Title</Form.Label>
       <Form.Control
         type="text"
-        placeholder="ex: un titre personalisé"
+        placeholder="ex: Title block"
         value={block.title}
         onChange={(e) => updateBlock("title",e.target.value)}
         style={{ marginBottom: "1rem" , width: "50%"}}
       />
 
-      {/* TEXTE */}
-      <Form.Label>Contenu</Form.Label>
+      <Form.Label>Content</Form.Label>
       <Form.Control
         as="textarea"
-        placeholder="ex: un texte personalisé"
+        placeholder="ex: Content block"
         rows={6}
         value={block.content}
         onChange={(e) => updateBlock("content", e.target.value)}
         style={{ marginBottom: "1rem", width: "50%" }}
       />
 
-      <Form.Label>Racourcis claviers - Uniques et accessibles via une interface dédiée</Form.Label>
+      <Form.Label>Keyboard Shortcut</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Appuyez sur les touches pour créer un raccourci"
+          placeholder="Short cut"
           value={shortcut}
           onKeyDown={createShortcut}
           readOnly
           style={{ marginBottom: "1rem" , width: "50%"}}
         />
 
-    {/* Boutons */}
     <div style={{ display: "flex", gap: "1rem", margin: "2rem" }}>
-    <Button variant="outline-primary" onClick={saveBlock} >Valider</Button >
+    <Button variant="outline-primary" onClick={saveBlock} >Save</Button >
     </div>
 
-    {/* Nouveau bloc d'affichiage */}
-    <Form.Label>Previsualization</Form.Label>
+    <Form.Label>Preview</Form.Label>
     <Form style={{ marginBottom: "1rem", width: "50%" }}>
       <p>Title : {block.title}</p>
       <p>Content : {block.content}</p>
