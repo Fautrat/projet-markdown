@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addBlockLocal } from "../../store/slices/blockSlice.js";
 import { addBlock } from"../../services/blockService.js";
+import { renderMarkdown } from "../markdown/renderMarkdown";
 
 function CustomBlock() {
 
   const dispatch = useDispatch();
   const [block, setBlock] = useState({id :Date.now(), title :"", content :"", shortcut :""});
   const [shortcut, setShortcut] = useState("");
+  const [previewHtml, setPreviewHtml] = useState("");
+
+  useEffect(() => {
+    async function update() {
+      const html = await renderMarkdown(block.content);
+      setPreviewHtml(html);
+    }
+    update();
+  }, [block.content]);
  
   async function saveBlock() {
     
@@ -99,7 +109,9 @@ function CustomBlock() {
     <Form.Label>Preview</Form.Label>
     <Form style={{ marginBottom: "1rem", width: "50%" }}>
       <p>Title : {block.title}</p>
-      <p>Content : {block.content}</p>
+      <p>Content : 
+        <div className="markdown-preview" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+      </p>
       <p>Shortcut : {block.shortcut}</p>
     </Form>
   </div>

@@ -31,7 +31,7 @@ export default function EditorPage({ fileId }) {
         return () => {
             cancelled = true;
         };
-    }, [fileId]);
+    }, [fileId, blocks]);
 
     function handleInsertImage(name, id) {
         const mdLine = `![${name}](img:${id})`;
