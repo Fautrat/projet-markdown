@@ -1,16 +1,40 @@
-# React + Vite
+# Markdown SAE Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Contexte
+Notre application permettre de gérer des fichiers au format Markdown, de les afficher
+dans un navigateur au format HTML, de créer des blocs HTML/Markdown
 
-Currently, two official plugins are available:
+## Structure du projet
+ 
+ - `views` :  fichiers de vues côté front-end (.jsx)
+ - `components` : composants React (Markdown, blocs, images, etc)
+ - `public` :  fichiers statiques côté front-end (ex: `Bootstrap`)
+ - `database` : fichiers liés à la gestion des données (ex : `dataManager`)
+ - `rudex` : ffichiers du store Redux, slices et services associés
+ - `package.json` : configuration du projet et dépendances npm
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
+## Technologies utilisées
+ - React19
+ - React Router
+ - Redux Toolkit
+ - Bootstrap
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Installation dependencies
 
-## Expanding the ESLint configuration
+```bash
+ npm install
+ npm i @reduxjs/toolkit react-redux
+ ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Lancer l'environnement de développement
+
+ ```bash
+ npm run dev
+ ```
+
+## Ouvrir le navigateur
+
+ ```bash
+ local http://localhost:5173/
+ ```
