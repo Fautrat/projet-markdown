@@ -50,13 +50,13 @@ function CustomBlock() {
 
       const key = e.key.length === 1 ? e.key.toUpperCase() : e.key;
       if (!["Control", "Shift", "Meta", "Alt"].includes(key)) {
-        keys.push(key);
-    }
+          keys.push(key);
+      }
 
-    const combo = keys.join("+");
-    setShortcut(combo);
-    updateBlock("shortcut", combo); 
-}
+      const combo = keys.join("+");
+      setShortcut(combo);
+      updateBlock("shortcut", combo); 
+  }
 
 
   return (

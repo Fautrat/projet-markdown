@@ -6,6 +6,7 @@ import { useState } from "react";
 function BlockLibrary() {
   const dispatch = useDispatch();
   const blocks = useSelector((state) => state.blocks.items || []);
+  const [editingId, setEditingId] = useState(null);
 
   const handleDelete = async (id) => {
     if (!confirm("Remove this block ?")) return;
@@ -21,6 +22,7 @@ function BlockLibrary() {
     try {
       const updated = await updateBlock(block.id, edited);
       dispatch(updateBlockLocal(updated));
+      setEditingId(null);
     } catch (err) {
       console.error("Update failed:", err);
     }
@@ -30,18 +32,23 @@ function BlockLibrary() {
     <>
       <h1 className="mb-4">Block Library</h1>
       <div className="row">
-         {
-          blocks.map((block) => (
-            <EditableBlock key={block.id} block={block} onDelete={() => handleDelete(block.id)} onSave={(edited) => handleSave(block, edited)}/>
-          ))
-          }
+        {blocks.map((block) => (
+          <EditableBlock
+            key={block.id}
+            block={block}
+            isEditing={editingId === block.id}
+            onEdit={() => setEditingId(block.id)}
+            onCancel={() => setEditingId(null)}
+            onDelete={() => handleDelete(block.id)}
+            onSave={(edited) => handleSave(block, edited)}
+          />
+        ))}
       </div>
     </>
   );
 }
 
-function EditableBlock({ block, onDelete, onSave }) {
-  const [isEditing, setIsEditing] = useState(false);
+function EditableBlock({ block, isEditing, onEdit, onCancel, onDelete, onSave }) {
   const [formData, setFormData] = useState({
     title: block.title,
     content: block.content,
@@ -52,14 +59,30 @@ function EditableBlock({ block, onDelete, onSave }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleShortcut = (e) => {
+    e.preventDefault();
+    const keys = [];
+    if (e.metaKey) keys.push("Command");
+    if (e.ctrlKey) keys.push("Ctrl");
+    if (e.shiftKey) keys.push("Shift");
+    if (e.altKey) keys.push("Alt");
+
+    const key = e.key.length === 1 ? e.key.toUpperCase() : e.key;
+    if (!["Control", "Shift", "Meta", "Alt"].includes(key)) {
+      keys.push(key);
+    }
+
+    const combo = keys.join("+");
+    setFormData({ ...formData, shortcut: combo });
+  };
+
   const handleSubmit = () => {
     onSave(formData);
-    setIsEditing(false);
   };
 
   return (
     <div className="col-md-4 mb-4">
-      <div className="card h-100 shadow-sm">
+      <div className="card shadow-sm">
         <div className="card-body d-flex flex-column">
           {isEditing ? (
             <>
@@ -70,8 +93,7 @@ function EditableBlock({ block, onDelete, onSave }) {
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="form-control"
-                />
+                  className="form-control"/>
               </div>
 
               <div className="mb-2">
@@ -80,8 +102,7 @@ function EditableBlock({ block, onDelete, onSave }) {
                   name="content"
                   value={formData.content}
                   onChange={handleChange}
-                  className="form-control"
-                />
+                  className="form-control"/>
               </div>
 
               <div className="mb-2">
@@ -90,9 +111,9 @@ function EditableBlock({ block, onDelete, onSave }) {
                   type="text"
                   name="shortcut"
                   value={formData.shortcut}
-                  onChange={handleChange}
-                  className="form-control"
-                />
+                  onKeyDown={handleShortcut}
+                  readOnly
+                  className="form-control"/>
               </div>
             </>
           ) : (
@@ -103,20 +124,19 @@ function EditableBlock({ block, onDelete, onSave }) {
             </>
           )}
 
-
           <div className="mt-auto d-flex justify-content-between">
             {isEditing ? (
               <>
                 <button className="btn btn-sm btn-success" onClick={handleSubmit}>
                   💾 Save
                 </button>
-                <button className="btn btn-sm btn-secondary" onClick={() => setIsEditing(false)}>
+                <button className="btn btn-sm btn-secondary" onClick={onCancel}>
                   ❌ Cancel
                 </button>
               </>
             ) : (
               <>
-                <button className="btn btn-sm btn-warning" onClick={() => setIsEditing(true)}>
+                <button className="btn btn-sm btn-warning" onClick={onEdit}>
                   ✏️ Edit
                 </button>
                 <button className="btn btn-sm btn-danger" onClick={onDelete}>
