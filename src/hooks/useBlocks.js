@@ -7,6 +7,7 @@ export function useBlocks() {
   useEffect(() => {
     async function fetchBlocks() {
       const blocks = await getAllBlocks();
+      console.log("Fetched blocks:", blocks);
       setBlocks(blocks);
     }
     fetchBlocks();

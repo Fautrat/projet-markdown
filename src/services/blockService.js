@@ -24,6 +24,7 @@ export async function getAllBlocks() {
     const store = tx.objectStore("blocks");
 
     const request = store.getAll();
+    console.log("Getting all blocks from DB");
 
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);

@@ -5,7 +5,9 @@ import store from "./store/store.js";
 import { useEffect, useState } from "react";
 import { openDatabase } from "./database/dbManager.js";
 import { getAllImages } from "./services/imageService.js";
+import { getAllBlocks } from "./services/blockService.js";
 import { setImages, setLoading, setError } from "./store/slices/imagesSlice.js";
+import { setBlocks } from "./store/slices/blockSlice.js";
 
 function AppInitializer() {
   const [dbReady, setDbReady] = useState(false);
@@ -17,7 +19,9 @@ function AppInitializer() {
         dispatch(setLoading());
         await openDatabase();
         const imgs = await getAllImages();
+        const blocks = await getAllBlocks();
         dispatch(setImages(imgs || []));
+        dispatch(setBlocks(blocks || []));
         setDbReady(true);
       } catch (err) {
         console.error("Failed to open DB or fetch images:", err);
