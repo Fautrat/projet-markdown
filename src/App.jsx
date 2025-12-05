@@ -16,7 +16,6 @@ function AppInitializer() {
       try {
         dispatch(setLoading());
         await openDatabase();
-        // maintenant la DB est ouverte : récupère toutes les images
         const imgs = await getAllImages();
         dispatch(setImages(imgs || []));
         setDbReady(true);
