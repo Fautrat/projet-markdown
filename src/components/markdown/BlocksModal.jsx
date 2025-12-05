@@ -72,13 +72,13 @@ export default function BlocksModal({ show, onClose, onSelect }) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                    <h5 style={{ margin: 0 }}>Bibliothèque de block</h5>
+                    <h5 style={{ margin: 0 }}>Block library</h5>
                 </div>
 
                 {loading ? (
                 <div>Chargement...</div>
                 ) : blocks.length === 0 ? (
-                <div className="text-muted">Aucun block dans la bibliothèque.</div>
+                <div className="text-muted">No blocks in the library.</div>
                 ) : (
                 <div className="d-flex gap-4 flex-wrap" >
                     {blocks.map(block => (

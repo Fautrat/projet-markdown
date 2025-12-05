@@ -145,7 +145,7 @@ export async function moveNode(id, newParentId) {
     const all = await getTree();
     const descendants = getAllDescendants(all, id);
     if (descendants.some((d) => d.id === newParentId)) {
-        throw new Error("Impossible de déplacer un dossier dans l'un de ses sous-dossiers.");
+        throw new Error("Impossible to move a folder into one of its subfolders");
     }
     const node = await getNode(id);
     node.parentId = newParentId === undefined ? null : newParentId;

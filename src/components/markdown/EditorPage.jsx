@@ -66,7 +66,7 @@ export default function EditorPage({ fileId }) {
                 <h5 className="mb-0">{title}</h5>
                 <div>
                     <button className="btn btn-outline-primary btn-sm" onClick={exportCurrentFile}>
-                        Exporter le fichier
+                        Export file
                     </button>
                 </div>
             </div>
@@ -75,12 +75,12 @@ export default function EditorPage({ fileId }) {
                 <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="card h-100 d-flex flex-column">
                         <div className="card-header">
-                            Éditeur
-                            <button className="ms-4 btn btn-outline-secondary btn-sm" onClick={() => setShowImageModal(true)}>
-                                📷 Insérer une image
+                            Editor
+                            <button className="ms-4 btn btn-outline-secondary btn-sm"  onClick={() => setShowImageModal(true)}>
+                                📷 Insert Image
                             </button>
-                            <button className="ms-1 btn btn-outline-secondary btn-sm" onClick={() => setShowBlocksModal(true)}>
-                                Insérer un bloc
+                            <button className="ms-1 btn btn-outline-secondary btn-sm"  onClick={() => setShowBlocksModal(true)}>
+                                Insert Block
                             </button>
                         </div>
 
@@ -92,7 +92,7 @@ export default function EditorPage({ fileId }) {
 
                 <div style={{ flex: 1.4, minWidth: 0 }}>
                     <div className="card h-100 d-flex flex-column">
-                        <div className="card-header">Prévisualisation</div>
+                        <div className="card-header">Preview</div>
 
                         <div className="card-body p-0 flex-grow-1 overflow-auto">
                             <MarkdownPreview value={content} />
