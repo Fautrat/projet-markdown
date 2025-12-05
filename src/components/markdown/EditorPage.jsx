@@ -3,11 +3,13 @@ import { getNode, updateFileContent } from "./markdownStorage";
 import MarkdownEditor from "./MarkdownEditor";
 import MarkdownPreview from "./MarkdownPreview";
 import ImagesModal from "./ImagesModal";
+import BlocksModal from "./BlocksModal";
 
 export default function EditorPage({ fileId }) {
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
     const [showImageModal, setShowImageModal] = useState(false);
+    const [showBlocksModal, setShowBlocksModal] = useState(false);
 
     useEffect(() => {
         let cancelled = false;
@@ -75,6 +77,9 @@ export default function EditorPage({ fileId }) {
                             <button className="ms-4 btn btn-outline-secondary btn-sm"  onClick={() => setShowImageModal(true)}>
                                 📷 Insérer une image
                             </button>
+                            <button className="ms-1 btn btn-outline-secondary btn-sm"  onClick={() => setShowBlocksModal(true)}>
+                                Insérer un block
+                            </button>
                         </div>
                         
 
@@ -98,6 +103,18 @@ export default function EditorPage({ fileId }) {
                     onSelect={(img) => {
                         handleInsertImage(img.name, img.id);
                         setShowImageModal(false);
+                    }}
+                />
+                <BlocksModal
+                    show={showBlocksModal}
+                    onClose={() => setShowBlocksModal(false)}
+                    onSelect={(block) => {
+                        setContent(prev => {
+                            const newContent = (prev ? prev + "\n\n" : "") + block.content;
+                            updateFileContent(fileId, newContent).catch(console.error);
+                            return newContent;
+                        });
+                        setShowBlocksModal(false);
                     }}
                 />
             </div>

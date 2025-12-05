@@ -15,7 +15,7 @@ async function loadImagesFromDB() {
         getAll.onsuccess = () => {
             const map = {};
             for (const img of getAll.result) {
-                map[img.id] = img.data;
+                map[img.id] = {'data' : img.data, 'name' : img.name};
             }
             resolve(map);
         };
@@ -51,13 +51,14 @@ export default function MarkdownPreview({ value }) {
 
                     if (href.startsWith("img:")) {
                         const id = href.split(":")[1];
-                        const base64 = imageDB[id];
+                        const base64 = imageDB[id]['data'] ||  "";
+                        const alt = imageDB[id]['name'] ||  "";
 
                         if (!base64) {
                             return `<div style="color:red">[Image introuvable: ${id}]</div>`;
                         }
 
-                        return `<img src="${base64}" alt="${text}" style="max-width:100%;" />`;
+                        return `<img src="${base64}" alt="${alt}" style="max-width:100%;" />`;
                     }
                     return `<img src="${href}" alt="${text || ""}" />`;
                 }
