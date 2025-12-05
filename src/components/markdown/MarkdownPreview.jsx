@@ -4,7 +4,7 @@ import DOMPurify from "dompurify";
 
 async function loadImagesFromDB() {
     return new Promise((resolve, reject) => {
-        const req = indexedDB.open("IndexedDB", 1);
+        const req = indexedDB.open("MarkdownDB", 1);
 
         req.onsuccess = () => {
         const db = req.result;

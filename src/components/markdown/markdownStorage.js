@@ -1,10 +1,10 @@
 function openDB() {
     return new Promise((resolve, reject) => {
-        const req = indexedDB.open("MarkdownDB", 4);
+        const req = indexedDB.open("MarkdownDB", 1);
         req.onupgradeneeded = (event) => {
             const db = event.target.result;
-            if (!db.objectStoreNames.contains("tree")) {
-                db.createObjectStore("tree", { keyPath: "id", autoIncrement: true });
+            if (!db.objectStoreNames.contains("files")) {
+                db.createObjectStore("files", { keyPath: "id", autoIncrement: true });
             }
         };
         req.onsuccess = () => resolve(req.result);
@@ -15,8 +15,8 @@ function openDB() {
 export async function getTree() {
     const db = await openDB();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("tree", "readonly");
-        const store = tx.objectStore("tree");
+        const tx = db.transaction("files", "readonly");
+        const store = tx.objectStore("files");
         const req = store.getAll();
         req.onsuccess = () => resolve(req.result || []);
         req.onerror = () => reject(req.error);
@@ -26,8 +26,8 @@ export async function getTree() {
 export async function getNode(id) {
     const db = await openDB();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("tree", "readonly");
-        const store = tx.objectStore("tree");
+        const tx = db.transaction("files", "readonly");
+        const store = tx.objectStore("files");
         const req = store.get(id);
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
@@ -37,8 +37,8 @@ export async function getNode(id) {
 function addNodeRaw(node) {
     return new Promise(async (resolve, reject) => {
         const db = await openDB();
-        const tx = db.transaction("tree", "readwrite");
-        const store = tx.objectStore("tree");
+        const tx = db.transaction("files", "readwrite");
+        const store = tx.objectStore("files");
         const req = store.add(node);
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
@@ -48,8 +48,8 @@ function addNodeRaw(node) {
 function putNodeRaw(node) {
     return new Promise(async (resolve, reject) => {
         const db = await openDB();
-        const tx = db.transaction("tree", "readwrite");
-        const store = tx.objectStore("tree");
+        const tx = db.transaction("files", "readwrite");
+        const store = tx.objectStore("files");
         const req = store.put(node);
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
@@ -59,8 +59,8 @@ function putNodeRaw(node) {
 function deleteNodeRaw(id) {
     return new Promise(async (resolve, reject) => {
         const db = await openDB();
-        const tx = db.transaction("tree", "readwrite");
-        const store = tx.objectStore("tree");
+        const tx = db.transaction("files", "readwrite");
+        const store = tx.objectStore("files");
         const req = store.delete(id);
         req.onsuccess = () => resolve();
         req.onerror = () => reject(req.error);
