@@ -43,13 +43,13 @@ const routes = [
       },
     ],
   },
+    imageRoute
     ],
   },
   {
     path: "*",
     Component: NotFound,
   },
-  imageRoute,
 
 ];
 
