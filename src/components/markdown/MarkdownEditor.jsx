@@ -1,4 +1,4 @@
-export default function MarkdownEditor({ value, onChange }) {
+export default function MarkdownEditor({ value, onChange, onShortcut }) {
     return (
         <textarea
         className="form-control"
@@ -15,6 +15,9 @@ export default function MarkdownEditor({ value, onChange }) {
         }}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+            if (onShortcut) onShortcut(e);
+        }}
         />
     );
 }

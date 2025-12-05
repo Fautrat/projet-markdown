@@ -141,7 +141,7 @@ export default function NodeItem({node, depth = 0, selectedId, onSelectFile, onR
                     <Button variant="outline-secondary"
                         size="sm"
                         className="p-1 d-flex align-items-center justify-content-center"
-                        title="Nouveau fichier enfant"
+                        title="new child file"
                         onClick={() => onCreateFile(node.id ?? null)}
                     >
                         <FilePlus size={14} />
@@ -150,7 +150,7 @@ export default function NodeItem({node, depth = 0, selectedId, onSelectFile, onR
                     <Button variant="outline-secondary"
                         size="sm"
                         className="p-1 d-flex align-items-center justify-content-center"
-                        title="Nouveau dossier enfant"
+                        title="New Child Folder"
                         onClick={() => onCreateFolder(node.id ?? null)}
                     >
                         <FolderPlus size={14} />

@@ -1,46 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export default function ImagesModal({ show, onClose, onSelect }) {
-    const [images, setImages] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const images = useSelector((state) => state.images.items || []);
 
     useEffect(() => {
         if (!show) return;
-        let cancelled = false;
-        async function loadImages() {
-            setLoading(true);
-            try {
-                const req = indexedDB.open("MarkdownDB", 1);
-                    req.onupgradeneeded = () => {
-                    const db = req.result;
-                    if (!db.objectStoreNames.contains("images")) {
-                        db.createObjectStore("images", { keyPath: "id", autoIncrement: true });
-                    }
-                };
-
-                const db = await new Promise((resolve, reject) => {
-                    req.onsuccess = () => resolve(req.result);
-                    req.onerror = () => reject(req.error);
-                });
-
-                const tx = db.transaction("images", "readonly");
-                const store = tx.objectStore("images");
-                const allReq = store.getAll();
-
-                const results = await new Promise((resolve, reject) => {
-                    allReq.onsuccess = () => resolve(allReq.result || []);
-                    allReq.onerror = () => reject(allReq.error);
-                });
-
-                if (!cancelled) setImages(results);
-            } catch (e) {
-                console.error("ImageModal load error", e);
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        }
-        loadImages();
-        return () => { cancelled = true; };
     }, [show]);
 
     if (!show) return null;
@@ -74,9 +39,7 @@ export default function ImagesModal({ show, onClose, onSelect }) {
                     <h5 style={{ margin: 0 }}>Bibliothèque d'images</h5>
                 </div>
 
-                {loading ? (
-                <div>Chargement...</div>
-                ) : images.length === 0 ? (
+                {images.length === 0 ? (
                 <div className="text-muted">Aucune image dans la bibliothèque.</div>
                 ) : (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>

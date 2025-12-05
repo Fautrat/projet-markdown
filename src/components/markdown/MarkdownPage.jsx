@@ -15,7 +15,7 @@ export default function MarkdownPage() {
         async function init() {
             const tree = await getTree();
             if (tree.length === 0) {
-                const id = await createFile("Bienvenue.md", null, "# Bienvenue\n\nCommencez à écrire...");
+                const id = await createFile("Welcome.md", null, "# Welcome\n\nStart writing...");
                 setCurrentId(id);
                 setTreeKey(k => k + 1);
             } else {
@@ -58,18 +58,17 @@ export default function MarkdownPage() {
                             alert("Déposez des fichiers .md ici.");
                             return;
                         }
-                        // importe le premier fichier et l'ouvre
                         const text = await files[0].text();
                         const id = await createFile(files[0].name, null, text);
                         setCurrentId(id);
                         refreshTree();
                     }}
                 >
-                    <h4>Sélectionner un fichier</h4>
+                    <h4>Select a file</h4>
                     <p className="text-muted mb-2">
-                        Glissez-déposez un fichier <strong>.md</strong> ici pour l'importer et l'ouvrir.
+                        Drag and drop a <strong>.md</strong> file here to import and open it.
                     </p>
-                    <div className="small text-muted">Ou sélectionnez un fichier dans la colonne de gauche.</div>
+                    <div className="small text-muted">Or select a file from the left column.</div>
                 </div>
                 ) : (
                 <EditorPage fileId={currentId} />
