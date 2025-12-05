@@ -25,6 +25,11 @@ export function openDatabase() {
         keyPath: "id",
         autoIncrement: true,
       });
+
+      db.createObjectStore("files", {
+        keyPath: "id",
+        autoIncrement: true,
+      });
     };
 
     request.onsuccess = () => {
