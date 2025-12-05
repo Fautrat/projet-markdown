@@ -1,43 +1,40 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { addBlockLocal } from "../../store/slices/blockSlice.js";
+import { addBlock } from"../../services/blockService.js";
 
 function CustomBlock() {
 
-  const [titre, setTitre] = useState("");
-  const [texte, setTexte] = useState("");
-  const [titreSauvegarde, setTitreSauvegarde] = useState("");
-  const [texteSauvegarde, setTexteSauvegarde] = useState("");
+  const dispatch = useDispatch();
+  const [block, setBlock] = useState({id :Date.now(), title :"", content :"", shortcut :""});
 
-  // Sauvegarde le texte actuel
-  function sauvegarderTexte(e) {
-    setTitreSauvegarde(titre);
-    setTexteSauvegarde(texte);
-    console.log("Titre sauvegardé :", titre, " | Texte sauvegardé :", texte);
+  async function saveBlock() {
+    
+    try {
+      const id = await addBlock(block);
+
+      dispatch(addBlockLocal({ ...block, id }));
+
+      setBlock({id :Date.now(), title :"", content :"", shortcut :""});
+      alert("Block saved successfully!");
+    }
+    catch (err) {
+      console.error("Save failed:", err);
+      alert("Block save failed!");
+
+    }
+
+    setBlock(block);
+    console.log("Bloc sauvegardé :", block);
   }
   
-  // Supprimer le texte actuel et vider le contenu éditable
-  function supprimerTexte(e) {
-    setTitre("");
-    setTexte("");
+  function updateBlock(field, value) {
+    setBlock((prevBlock) => ({
+      ...prevBlock,
+      [field]: value,
+    }));
   }
-
-  // modifier le texte et sauvegarde
-  // function modifierTexte(e) {
-  //   setTitre(titreSauvegarde);
-  //   setTexte(texteSauvegarde);
-  //   // setNouveau(sauvegarderTexte);
-  // }
-
-  
-  // function renommageTexte(e) {
-  //   setTexte(e.target.value);
-  // }
-
-  // function importTexte(e) {
-  // }
-
-  // function exportTexte(e) {
-  // }
 
 
   return (
@@ -50,8 +47,8 @@ function CustomBlock() {
       <Form.Control
         type="text"
         placeholder="ex: un titre personalisé"
-        value={titre}
-        onChange={(e) => setTitre(e.target.value)}
+        value={block.title}
+        onChange={(e) => updateBlock("title",e.target.value)}
         style={{ marginBottom: "1rem" , width: "50%"}}
       />
 
@@ -61,8 +58,8 @@ function CustomBlock() {
         as="textarea"
         placeholder="ex: un texte personalisé"
         rows={6}
-        value={texte}
-        onChange={(e) => setTexte(e.target.value)}
+        value={block.content}
+        onChange={(e) => updateBlock("content", e.target.value)}
         style={{ marginBottom: "1rem", width: "50%" }}
       />
 
@@ -70,22 +67,22 @@ function CustomBlock() {
         <Form.Control
           type="text"
           placeholder="ex: commonde + T ..."
-          value={titre}
-          onChange={(e) => setTitre(e.target.value)}
+          value={block.shortcut}
+          onChange={(e) => updateBlock("shortcut", e.target.value)}
           style={{ marginBottom: "1rem" , width: "50%"}}
         />
+
     {/* Boutons */}
     <div style={{ display: "flex", gap: "1rem", margin: "2rem" }}>
-    <Button variant="outline-primary" onClick={sauvegarderTexte} >Valider</Button >
-    {/* <Button variant="info" onClick={modifierTexte} >Modifier</Button >
-    // <Button variant="secondary" onClick={supprimerTexte} >Supprimer</Button > */}
+    <Button variant="outline-primary" onClick={saveBlock} >Valider</Button >
     </div>
 
     {/* Nouveau bloc d'affichiage */}
-    <Form.Label>Sauvegarde</Form.Label>
+    <Form.Label>Previsualization</Form.Label>
     <Form style={{ marginBottom: "1rem", width: "50%" }}>
-      <p>Titre : {titreSauvegarde}</p>
-      <p>Texte : {texteSauvegarde}</p>
+      <p>Title : {block.title}</p>
+      <p>Content : {block.content}</p>
+      <p>Shortcut : {block.shortcut}</p>
     </Form>
   </div>
 );
