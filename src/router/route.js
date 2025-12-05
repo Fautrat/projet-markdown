@@ -5,6 +5,8 @@ import Layout from '../components/Layout/Layout.jsx';
 import MarkdownPage from "../components/markdown/MarkdownPage.jsx";
 import CustomBlock from "../components/blockComponent/CustomBlock.jsx";
 import imageRoute from "./routes/imageRoute.js";
+import BlockLibrary from "../components/blockComponent/BlockLibrary.jsx";
+import Block from "../components/blockComponent/Block.jsx";
 
 const routes = [
   {
@@ -25,7 +27,21 @@ const routes = [
   },
   {
     path: "block",
-    Component: CustomBlock,
+    Component: Block,
+    children: [
+      {
+        index: true,
+        Component: BlockLibrary,
+      },
+      {
+        path: "create",
+        Component: CustomBlock,
+      },
+      {
+        path: "library",
+        Component: BlockLibrary,
+      },
+    ],
   },
     ],
   },

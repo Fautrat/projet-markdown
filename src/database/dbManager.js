@@ -21,9 +21,10 @@ export function openDatabase() {
         autoIncrement: true,
       });
 
-      if (!db.objectStoreNames.contains("blocks")) {
-        db.createObjectStore("blocks", { keyPath: "id", autoIncrement: true });
-      }
+      db.createObjectStore("blocks", {
+        keyPath: "id",
+        autoIncrement: true,
+      });
     };
 
     request.onsuccess = () => {
