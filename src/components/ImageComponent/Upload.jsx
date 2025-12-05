@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addImageLocal } from "../../store/slices/imagesSlice.js.js";
+import { addImageLocal } from "../../store/slices/imagesSlice.js";
 import { addImage } from "../../services/imageService.js";
 
 function Upload() {

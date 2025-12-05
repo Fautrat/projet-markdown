@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import imagesReducer from "./slices/imagesSlice.js.js";
+import imagesReducer from "./slices/imagesSlice.js";
 import blocksReducer from "./slices/blockSlice.js";
 
 

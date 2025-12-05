@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import {removeImageLocal,updateImageLocal,} from "../../store/slices/imagesSlice.js.js";
+import {removeImageLocal,updateImageLocal,} from "../../store/slices/imagesSlice.js";
 import { deleteImage, updateImage } from "../../services/imageService.js";
 
 function Library() {

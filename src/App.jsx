@@ -5,7 +5,7 @@ import store from "./store/store.js";
 import { useEffect, useState } from "react";
 import { openDatabase } from "./database/dbManager.js";
 import { getAllImages } from "./services/imageService.js";
-import { setImages, setLoading, setError } from "./store/slices/imagesSlice.js.js";
+import { setImages, setLoading, setError } from "./store/slices/imagesSlice.js";
 
 function AppInitializer() {
   const [dbReady, setDbReady] = useState(false);
