@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from '../components/baseComponent/home.jsx';
 import NotFound from '../components/baseComponent/notFound.jsx';
 import Layout from '../components/Layout/Layout.jsx';
 import MarkdownPage from "../components/markdown/MarkdownPage.jsx";
@@ -15,11 +14,7 @@ const routes = [
     children: [
   {
     index: true,
-    Component: Home,
-  },
-  {
-    path: "home",
-    Component: Home,
+    Component: MarkdownPage,
   },
   {
     path: "markdown",
