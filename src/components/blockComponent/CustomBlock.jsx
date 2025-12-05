@@ -8,7 +8,8 @@ function CustomBlock() {
 
   const dispatch = useDispatch();
   const [block, setBlock] = useState({id :Date.now(), title :"", content :"", shortcut :""});
-
+  const [shortcut, setShortcut] = useState("");
+ 
   async function saveBlock() {
     
     try {
@@ -35,6 +36,27 @@ function CustomBlock() {
       [field]: value,
     }));
   }
+ // Fonctionnalité pour créer des raccourcis clavier
+    
+  function createShortcut(e) {
+      e.preventDefault();
+      const keys = [];
+      if (e.metaKey) keys.push("Command"); // Mac
+      if (e.ctrlKey) keys.push("Ctrl");
+      if (e.shiftKey) keys.push("Shift");
+      if (e.altKey) keys.push("Alt");
+      setShortcut(keys.join("+"));
+      updateBlock("shortcut", keys.join("+"));
+
+      const key = e.key.length === 1 ? e.key.toUpperCase() : e.key;
+      if (!["Control", "Shift", "Meta", "Alt"].includes(key)) {
+        keys.push(key);
+    }
+
+    const combo = keys.join("+");
+    setShortcut(combo);
+    updateBlock("shortcut", combo); 
+}
 
 
   return (
@@ -66,9 +88,10 @@ function CustomBlock() {
       <Form.Label>Racourcis claviers - Uniques et accessibles via une interface dédiée</Form.Label>
         <Form.Control
           type="text"
-          placeholder="ex: commonde + T ..."
-          value={block.shortcut}
-          onChange={(e) => updateBlock("shortcut", e.target.value)}
+          placeholder="Appuyez sur les touches pour créer un raccourci"
+          value={shortcut}
+          onKeyDown={createShortcut}
+          readOnly
           style={{ marginBottom: "1rem" , width: "50%"}}
         />
 
